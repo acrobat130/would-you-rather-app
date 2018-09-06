@@ -21,6 +21,27 @@ class App extends Component {
     this.setState({ authedUserId });
   }
 
+  handleLogout = (e) => {
+    e.preventDefault();
+
+    this.setAuthedUserId('');
+  }
+
+  renderLogoutButton = () => {
+    const { authedUserId } = this.state;
+
+    return (
+      <form onSubmit={this.handleLogout}>
+        <button
+          type="submit"
+          disabled={!authedUserId}
+        >
+          Logout
+        </button>
+      </form>
+    )
+  }
+
   renderLogin = ({ location }) => {
     const { users } = this.state;
 
@@ -51,6 +72,7 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
             <h1 className="App-title">Would You Rather</h1>
+            {this.renderLogoutButton()}
           </header>
           <Switch>
             <ProtectedRoute
