@@ -53,8 +53,8 @@ export default class Login extends Component {
   }
 
   render() {
-    const { location } = this.props;
-    const referrerPathname = _.isEmpty(location) ? '/' : location.state.referrer.pathname;
+    const locationState = this.props.location.state;
+    const referrerPathname = _.isEmpty(locationState) ? '/' : locationState.referrer.pathname;
     const { selectedUserId, shouldRedirect } = this.state;
 
     if (shouldRedirect) {
