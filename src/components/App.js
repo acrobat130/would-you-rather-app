@@ -42,6 +42,21 @@ class App extends Component {
     )
   }
 
+  renderUserDetails = () => {
+    const { authedUserId, users } = this.state;
+    const user = users[authedUserId];
+    const { name, avatarURL } = user;
+    console.log("user---", user)
+
+    return (
+      <div className="right">
+        <img className="App-logo" src={avatarURL} />
+        <h3>{name}</h3>
+        {this.renderLogoutButton()}
+      </div>
+    )
+  }
+
   renderLogin = ({ location }) => {
     const { users } = this.state;
 
@@ -70,9 +85,11 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+          <nav>
+            {authedUserId && this.renderUserDetails()}
+          </nav>
           <header className="App-header">
             <h1 className="App-title">Would You Rather</h1>
-            {this.renderLogoutButton()}
           </header>
           <Switch>
             <ProtectedRoute
