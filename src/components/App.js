@@ -1,34 +1,48 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './App.css';
-import { _getUsers } from '../utils/_DATA.js';
 import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
+import { fetchUsers } from '../actions/users';
+import { setAuthedUserId } from '../actions/authedUserId';
+
+function mapStateToProps(state) {
+  const { users, authedUserId } = state;
+
+  return {
+    authedUserId,
+    users
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getUsers: () => dispatch(fetchUsers()),
+    setAuthedUserId: (userId) => dispatch(setAuthedUserId(userId))
+  }
+}
 
 class App extends Component {
-  state = {
-    users: {},
-    authedUserId: ''
+  static propTypes = {
+    authedUserId: PropTypes.string,
+    getUsers: PropTypes.func.isRequired,
+    users: PropTypes.object
   }
 
   componentDidMount = () => {
-    return _getUsers()
-      .then(users => this.setState({ users }))
-      .catch(error => console.error('could not fetch users.', error))
-  }
-
-  setAuthedUserId = (authedUserId) => {
-    this.setState({ authedUserId });
+    this.props.getUsers();
   }
 
   handleLogout = (e) => {
     e.preventDefault();
 
-    this.setAuthedUserId('');
+    this.props.setAuthedUserId('');
   }
 
   renderLogoutButton = () => {
-    const { authedUserId } = this.state;
+    const { authedUserId } = this.props;
 
     return (
       <form onSubmit={this.handleLogout}>
@@ -43,14 +57,17 @@ class App extends Component {
   }
 
   renderUserDetails = () => {
-    const { authedUserId, users } = this.state;
+    const { authedUserId, users } = this.props;
     const user = users[authedUserId];
     const { name, avatarURL } = user;
-    console.log("user---", user)
 
     return (
       <div className="right">
-        <img className="App-logo" src={avatarURL} />
+        <img
+          className="App-logo"
+          src={avatarURL}
+          alt="avatar"
+        />
         <h3>{name}</h3>
         {this.renderLogoutButton()}
       </div>
@@ -58,12 +75,12 @@ class App extends Component {
   }
 
   renderLogin = ({ location }) => {
-    const { users } = this.state;
+    const { users, setAuthedUserId } = this.props;
 
     return (
       <Login
         users={users}
-        setAuthedUserId={this.setAuthedUserId}
+        setAuthedUserId={setAuthedUserId}
         location={location}
       />
     )
@@ -80,7 +97,7 @@ class App extends Component {
   }
 
   render() {
-    const { authedUserId } = this.state;
+    const { authedUserId } = this.props;
 
     return (
       <BrowserRouter>
@@ -114,4 +131,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
