@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from '../utils/lodash';
+import QuestionTeaser from './QuestionTeaser';
 
 export default class Dashboard extends Component {
   static propTypes = {
@@ -49,10 +50,10 @@ export default class Dashboard extends Component {
       const { optionOne, optionTwo } = question;
 
       return (
-        <li key={question.id}>
-          <p>Would You Rather:</p>
-          <p>{optionOne.text} or...</p>
-        </li>
+        <QuestionTeaser
+          key={question.id}
+          question={question}
+        />
       );
     });
   }

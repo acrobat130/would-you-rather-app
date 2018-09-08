@@ -83,12 +83,12 @@ Your code will talk to the database via 4 methods:
 4) `_saveQuestionAnswer(object)` Method
 
 *Description*: Save the answer to a particular polling question in the database.
-*Parameters*: Object that contains the following properties: `authedUser`, `qid`, and `answer`. More details about these properties:
+*Parameters*: Object that contains the following properties: `authedUserId`, `questionId`, and `answer`. More details about these properties:
 
 | Attribute | Type | Description |
 |-----------------|------------------|-------------------|
-| authedUser | String | The id of the user who answered the question|
-| qid | String | The id of the question that was answered|
+| authedUserId | String | The id of the user who answered the question|
+| questionId | String | The id of the question that was answered|
 | answer | String | The option the user selected. The value should be either `"optionOne"` or `"optionTwo"`|
 
 

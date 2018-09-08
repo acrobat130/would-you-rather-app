@@ -6,13 +6,7 @@
   width: 80px;
 }
 
-.right {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.right > * {
+.nav-items-group > * {
   margin: 0 5px;
 }
 
@@ -22,10 +16,31 @@
   color: white;
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+nav > * {
+  display: flex;
+  align-items: center;
+}
+
 .App-title {
   font-size: 1.5em;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.question-teaser-link {
+  text-decoration: none;
+  color: initial;
+}
+
+.question-teaser {
+  border: 1px solid black;
+  margin: 10px;
+  list-style: none;
 }

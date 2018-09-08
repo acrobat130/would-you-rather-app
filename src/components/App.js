@@ -1,42 +1,18 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Link, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { history } from '../utils/history';
 import './App.css';
 import ProtectedRoute from './ProtectedRoute';
 import { fetchUsers } from '../actions/users';
 import { fetchQuestions } from '../actions/questions';
 import { setAuthedUserId } from '../actions/authedUserId';
+import { submitVote } from '../actions/shared';
 import Login from './Login';
 import Dashboard from './Dashboard';
+import Poll from './Poll';
 import _ from '../utils/lodash';
-
-const getQuestionsByStatus = (authedUserId, questions) => {
-  let answered = {};
-  let unanswered = {};
-
-  _.forEach(questions, question => {
-    const { optionOne, optionTwo } = question;
-    const votes = optionOne.votes.concat(optionTwo.votes);
-
-    if (votes.includes(authedUserId)) {
-      return answered = {
-        ...answered,
-        [question.id]: question
-      }
-    }
-
-    unanswered = {
-      ...unanswered,
-      [question.id]: question
-    };
-  });
-
-  return {
-    answered,
-    unanswered
-  };
-}
 
 function mapStateToProps(state) {
   const { authedUserId, questions, users } = state;
@@ -52,7 +28,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getUsers: () => dispatch(fetchUsers()),
     getQuestions: () => dispatch(fetchQuestions()),
-    setAuthedUserId: (userId) => dispatch(setAuthedUserId(userId))
+    setAuthedUserId: (userId) => dispatch(setAuthedUserId(userId)),
+    submitVote: (userId, questionId, vote) => dispatch(submitVote(userId, questionId, vote))
   }
 }
 
@@ -61,6 +38,7 @@ class App extends Component {
     authedUserId: PropTypes.string,
     getUsers: PropTypes.func.isRequired,
     questions: PropTypes.object.isRequired,
+    submitVote: PropTypes.func.isRequired,
     users: PropTypes.object.isRequired
   }
 
@@ -73,6 +51,35 @@ class App extends Component {
     e.preventDefault();
 
     this.props.setAuthedUserId('');
+  }
+
+  isQuestionAnswered = (questionId) => {
+    const { authedUserId, users } = this.props;
+    const user = users[authedUserId];
+    const answeredQuestionIds = Object.keys(user.answers);
+
+    return answeredQuestionIds.includes(questionId);
+  }
+
+  getQuestionsByStatus = () => {
+    const { questions } = this.props;
+    const answered = {};
+    const unanswered = {};
+
+    Object.keys(questions).forEach(questionId => {
+      const question = questions[questionId];
+
+      if (this.isQuestionAnswered(questionId)) {
+        return answered[questionId] = question;
+      }
+
+      return unanswered[questionId] = question;
+    });
+
+    return {
+      answered,
+      unanswered
+    };
   }
 
   renderLogoutButton = () => {
@@ -96,7 +103,7 @@ class App extends Component {
     const { name, avatarURL } = user;
 
     return (
-      <div className="right">
+      <div className="nav-items-group">
         <img
           className="App-logo"
           src={avatarURL}
@@ -105,6 +112,25 @@ class App extends Component {
         <h3>{name}</h3>
         {this.renderLogoutButton()}
       </div>
+    );
+  }
+
+  renderNav = () => {
+    const { authedUserId } = this.props;
+
+    if (!authedUserId) {
+      return null;
+    }
+
+    return (
+      <nav>
+        <div className="nav-items-group">
+          <Link to="/">Dashboard</Link>
+          <Link to="/leaderboard">Leaderboard</Link>
+          <Link to="/new-poll">New Poll</Link>
+        </div>
+        {this.renderUserDetails()}
+      </nav>
     );
   }
 
@@ -121,8 +147,8 @@ class App extends Component {
   }
 
   renderDashboard = () => {
-    const { authedUserId, questions, users } = this.props;
-    const questionsByStatus = getQuestionsByStatus(authedUserId, questions);
+    const { authedUserId, users } = this.props;
+    const questionsByStatus = this.getQuestionsByStatus();
     const { answered, unanswered } = questionsByStatus;
 
     return (
@@ -135,19 +161,40 @@ class App extends Component {
     );
   }
 
-  renderTestRoute = () => {
-    return <h3>Test Route</h3>
+  renderLeaderboard = () => {
+    return <h3>Leaderboard</h3>
+  }
+
+  renderNewPoll = () => {
+    return <h3>Create a New Poll</h3>
+  }
+
+  renderQuestion = ({ match }) => {
+    const { authedUserId, questions, submitVote } = this.props;
+    const id = match.params.id;
+    const question = questions[id];
+    const isAnswered = this.isQuestionAnswered(question, authedUserId);
+
+    if (isAnswered) {
+      return <div>results for this question</div>
+    }
+
+    return (
+      <Poll
+        authedUserId={authedUserId}
+        question={question}
+        submitVote={submitVote}
+      />
+    );
   }
 
   render() {
     const { authedUserId } = this.props;
 
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <div className="App">
-          <nav>
-            {authedUserId && this.renderUserDetails()}
-          </nav>
+          {this.renderNav()}
           <header className="App-header">
             <h1 className="App-title">Would You Rather</h1>
           </header>
@@ -159,8 +206,18 @@ class App extends Component {
               isAuthenticated={!!authedUserId}
             />
             <ProtectedRoute
-              path="/test"
-              render={this.renderTestRoute}
+              path="/leaderboard"
+              render={this.renderLeaderboard}
+              isAuthenticated={!!authedUserId}
+            />
+            <ProtectedRoute
+              path="/new-poll"
+              render={this.renderNewPoll}
+              isAuthenticated={!!authedUserId}
+            />
+            <ProtectedRoute
+              path="/question/:id"
+              render={this.renderQuestion}
               isAuthenticated={!!authedUserId}
             />
             <Route
@@ -169,7 +226,7 @@ class App extends Component {
             />
           </Switch>
         </div>
-      </BrowserRouter>
+      </Router>
     );
   }
 }
