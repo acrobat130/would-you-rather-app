@@ -4,15 +4,46 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './App.css';
 import ProtectedRoute from './ProtectedRoute';
-import Login from './Login';
 import { fetchUsers } from '../actions/users';
+import { fetchQuestions } from '../actions/questions';
 import { setAuthedUserId } from '../actions/authedUserId';
+import Login from './Login';
+import Dashboard from './Dashboard';
+import _ from '../utils/lodash';
+
+const getQuestionsByStatus = (authedUserId, questions) => {
+  let answered = {};
+  let unanswered = {};
+
+  _.forEach(questions, question => {
+    const { optionOne, optionTwo } = question;
+    const votes = optionOne.votes.concat(optionTwo.votes);
+
+    if (votes.includes(authedUserId)) {
+      return answered = {
+        ...answered,
+        [question.id]: question
+      }
+    }
+
+    unanswered = {
+      ...unanswered,
+      [question.id]: question
+    };
+  });
+
+  return {
+    answered,
+    unanswered
+  };
+}
 
 function mapStateToProps(state) {
-  const { users, authedUserId } = state;
+  const { authedUserId, questions, users } = state;
 
   return {
     authedUserId,
+    questions,
     users
   }
 }
@@ -20,6 +51,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getUsers: () => dispatch(fetchUsers()),
+    getQuestions: () => dispatch(fetchQuestions()),
     setAuthedUserId: (userId) => dispatch(setAuthedUserId(userId))
   }
 }
@@ -28,11 +60,13 @@ class App extends Component {
   static propTypes = {
     authedUserId: PropTypes.string,
     getUsers: PropTypes.func.isRequired,
-    users: PropTypes.object
+    questions: PropTypes.object.isRequired,
+    users: PropTypes.object.isRequired
   }
 
   componentDidMount = () => {
     this.props.getUsers();
+    this.props.getQuestions();
   }
 
   handleLogout = (e) => {
@@ -71,7 +105,7 @@ class App extends Component {
         <h3>{name}</h3>
         {this.renderLogoutButton()}
       </div>
-    )
+    );
   }
 
   renderLogin = ({ location }) => {
@@ -83,13 +117,22 @@ class App extends Component {
         setAuthedUserId={setAuthedUserId}
         location={location}
       />
-    )
+    );
   }
 
   renderDashboard = () => {
+    const { authedUserId, questions, users } = this.props;
+    const questionsByStatus = getQuestionsByStatus(authedUserId, questions);
+    const { answered, unanswered } = questionsByStatus;
+
     return (
-      <h3>Dashboard</h3>
-    )
+      <Dashboard
+        authedUserId={authedUserId}
+        answered={answered}
+        unanswered={unanswered}
+        users={users}
+      />
+    );
   }
 
   renderTestRoute = () => {

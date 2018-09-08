@@ -1,9 +1,11 @@
-import map from 'lodash.map';
+import forEach from 'lodash.foreach';
 import isEmpty from 'lodash.isempty';
+import map from 'lodash.map';
 
 const _ = {
-  map,
-  isEmpty
+  forEach,
+  isEmpty,
+  map
 };
 
 export default _;
