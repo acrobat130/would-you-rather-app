@@ -12,6 +12,7 @@ import { submitVote } from '../actions/shared';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Poll from './Poll';
+import Results from './Results';
 import _ from '../utils/lodash';
 
 function mapStateToProps(state) {
@@ -170,13 +171,18 @@ class App extends Component {
   }
 
   renderQuestion = ({ match }) => {
-    const { authedUserId, questions, submitVote } = this.props;
-    const id = match.params.id;
-    const question = questions[id];
-    const isAnswered = this.isQuestionAnswered(question, authedUserId);
+    const { authedUserId, questions, submitVote, users } = this.props;
+    const questionId = match.params.id;
+    const question = questions[questionId];
+    const isAnswered = this.isQuestionAnswered(questionId);
 
     if (isAnswered) {
-      return <div>results for this question</div>
+      return (
+        <Results
+          question={question}
+          users={users}
+        />
+      )
     }
 
     return (
@@ -184,6 +190,7 @@ class App extends Component {
         authedUserId={authedUserId}
         question={question}
         submitVote={submitVote}
+        users={users}
       />
     );
   }

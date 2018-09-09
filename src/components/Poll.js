@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import QuestionHeader from './QuestionHeader';
 
 export default class Poll extends Component {
   static propTypes = {
     authedUserId: PropTypes.string.isRequired,
     question: PropTypes.object.isRequired,
-    submitVote: PropTypes.func.isRequired
+    submitVote: PropTypes.func.isRequired,
+    users: PropTypes.object.isRequired
   }
 
   state = {
@@ -28,14 +30,13 @@ export default class Poll extends Component {
   }
 
   render() {
-    const { question } = this.props;
-    const { id, name, optionOne, optionTwo } = question;
+    const { question, users } = this.props;
+    const { id, optionOne, optionTwo } = question;
     const { selectedOption } = this.state;
 
     return (
       <div>
-        <p>Submitted by {name}</p>
-        <h2>Would You Rather...</h2>
+        <QuestionHeader question={question} users={users} />
         <form onSubmit={this.handleSubmit}>
           <label>
             <input
