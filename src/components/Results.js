@@ -4,12 +4,13 @@ import QuestionHeader from './QuestionHeader';
 
 export default class Results extends Component {
   static propTypes = {
+    authedUserId: PropTypes.string.isRequired,
     question: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired
   }
 
   renderOptions = () => {
-    const { question } = this.props;
+    const { authedUserId, question } = this.props;
     const { id, optionOne, optionTwo } = question;
     const options = [optionOne, optionTwo];
     const totalVotes = options.reduce((sum, option) => {
@@ -19,12 +20,16 @@ export default class Results extends Component {
     return options.map((option, key) => {
       const { text, votes } = option;
       const percentage = Math.round(votes.length / totalVotes * 100);
+      const selected = votes.includes(authedUserId);
 
       return (
         <div key={`${id}-${key}`}>
-          <p>{text}</p>
-          <p>{votes.length} votes</p>
-          <p>{percentage}%</p>
+          {selected && <p style={{backgroundColor: 'antiquewhite'}}>You selected:</p>}
+          <div>
+            <p>{text}</p>
+            <p>{votes.length} votes</p>
+            <p>{percentage}%</p>
+          </div>
         </div>
       );
     });

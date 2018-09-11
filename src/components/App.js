@@ -179,6 +179,7 @@ class App extends Component {
     if (isAnswered) {
       return (
         <Results
+          authedUserId={authedUserId}
           question={question}
           users={users}
         />
