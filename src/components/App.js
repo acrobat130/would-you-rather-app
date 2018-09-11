@@ -170,10 +170,19 @@ class App extends Component {
     return <h3>Create a New Poll</h3>
   }
 
+  render404 = () => {
+    return <div>404 page</div>
+  }
+
   renderQuestion = ({ match }) => {
     const { authedUserId, questions, submitVote, users } = this.props;
     const questionId = match.params.id;
     const question = questions[questionId];
+
+    if (!question) {
+      return this.render404();
+    }
+
     const isAnswered = this.isQuestionAnswered(questionId);
 
     if (isAnswered) {
@@ -231,6 +240,9 @@ class App extends Component {
             <Route
               path="/login"
               render={this.renderLogin}
+            />
+            <Route
+              component={this.render404}
             />
           </Switch>
         </div>
