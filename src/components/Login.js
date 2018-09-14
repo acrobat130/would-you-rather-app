@@ -1,9 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import _ from '../utils/lodash';
+import { setAuthedUserId } from '../actions/authedUserId';
 
-export default class Login extends Component {
+function mapStateToProps({ users }) {
+  return {
+    users
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setAuthedUserId: (userId) => dispatch(setAuthedUserId(userId)),
+  }
+}
+
+class Login extends Component {
   static propTypes = {
     users: PropTypes.object,
     setAuthedUserId: PropTypes.func.isRequired,
@@ -88,3 +102,5 @@ export default class Login extends Component {
     )
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import serialize from 'form-serialize';
+import { postQuestion } from '../actions/questions';
 
-export default class CreatePoll extends Component {
+function mapStateToProps({ authedUserId }) {
+  return {
+    authedUserId
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    postQuestion: (question) => dispatch(postQuestion(question))
+  }
+}
+
+class CreatePoll extends Component {
   static propTypes = {
     authedUserId: PropTypes.string.isRequired,
     postQuestion: PropTypes.func.isRequired
@@ -45,3 +59,5 @@ export default class CreatePoll extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePoll);

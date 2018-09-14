@@ -16,7 +16,7 @@ export default class QuestionHeader extends Component {
     return (
       <div>
         <img
-          className="App-logo"
+          className="image"
           src={avatarURL}
           alt="avatar"
         />

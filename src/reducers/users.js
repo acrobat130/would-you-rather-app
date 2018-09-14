@@ -7,23 +7,20 @@ function saveQuestion(state, action) {
     ...userQuestions,
     action.question.id
   ];
-  const newState = { ...state };
 
-  newState[userId] = {
+  return {
+    ...state,
+    [userId]: {
       ...state[userId],
       questions
     }
-
-  return newState;
+  }
 }
 
 export default function users(state = {}, action) {
   switch(action.type) {
     case types.RECEIVE_USERS:
-      return {
-        ...state,
-        ...action.users
-      }
+      return action.users;
 
     case types.SAVE_QUESTION:
       return saveQuestion(state, action);

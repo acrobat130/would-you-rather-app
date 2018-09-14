@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import QuestionHeader from './QuestionHeader';
 
-export default class Results extends Component {
+function mapStateToProps({ authedUserId, users }) {
+  return {
+    authedUserId,
+    users
+  }
+}
+
+class Results extends Component {
   static propTypes = {
     authedUserId: PropTypes.string.isRequired,
     question: PropTypes.object.isRequired,
@@ -46,3 +54,5 @@ export default class Results extends Component {
     )
   }
 }
+
+export default connect(mapStateToProps)(Results);

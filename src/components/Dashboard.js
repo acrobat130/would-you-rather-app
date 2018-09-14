@@ -1,8 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import _ from '../utils/lodash';
+import { isQuestionAnswered } from '../utils/questions-helper';
 import QuestionTeaser from './QuestionTeaser';
 
-export default class Dashboard extends Component {
+function sortQuestions(questions) {
+  return _.map(questions, question => question)
+    .sort((a, b) => a.timestamp < b.timestamp);
+}
+
+function getQuestionsByStatus(authedUserId, questions, users) {
+  const sortedQuestions = sortQuestions(questions);
+  const answered = sortedQuestions.filter(question => isQuestionAnswered(authedUserId, question.id, users));
+  const unanswered = sortedQuestions.filter(question => !isQuestionAnswered(authedUserId, question.id, users));
+
+  return {
+    answered,
+    unanswered
+  };
+}
+
+function mapStateToProps({ authedUserId, questions, users }) {
+  const questionsByStatus = getQuestionsByStatus(authedUserId, questions, users);
+  const { answered, unanswered } = questionsByStatus;
+
+  return {
+    authedUserId,
+    answered,
+    unanswered,
+    users
+  }
+}
+
+class Dashboard extends Component {
   static propTypes = {
     authedUserId: PropTypes.string.isRequired,
     answered: PropTypes.array.isRequired,
@@ -46,8 +77,6 @@ export default class Dashboard extends Component {
     const questions = this.selectQuestions();
 
     return questions.map(question => {
-      const { optionOne, optionTwo } = question;
-
       return (
         <QuestionTeaser
           key={question.id}
@@ -61,11 +90,13 @@ export default class Dashboard extends Component {
 
     return (
       <div>
+        <h2>Dashboard</h2>
         {this.renderTabButton('Unanswered Questions', 'unanswered')}
         {this.renderTabButton('Answered Questions', 'answered')}
         <ul>{this.renderQuestions()}</ul>
       </div>
     );
-
   }
 }
+
+export default connect(mapStateToProps)(Dashboard);
