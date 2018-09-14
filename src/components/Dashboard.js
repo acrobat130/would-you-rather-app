@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from '../utils/lodash';
 import QuestionTeaser from './QuestionTeaser';
 
 export default class Dashboard extends Component {
   static propTypes = {
     authedUserId: PropTypes.string.isRequired,
-    answered: PropTypes.object.isRequired,
-    unanswered: PropTypes.object.isRequired,
+    answered: PropTypes.array.isRequired,
+    unanswered: PropTypes.array.isRequired,
     users: PropTypes.object.isRequired
   }
 
@@ -46,7 +45,7 @@ export default class Dashboard extends Component {
   renderQuestions = () => {
     const questions = this.selectQuestions();
 
-    return _.map(questions, question => {
+    return questions.map(question => {
       const { optionOne, optionTwo } = question;
 
       return (

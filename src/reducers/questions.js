@@ -1,26 +1,27 @@
 import * as types from '../actions/types';
+import _ from '../utils/lodash';
 
-// sort questions with newest-created questions showing first
 function sortQuestions(questions) {
-  const sortedQuestions = {};
-  const sortedIds = Object.keys(questions).sort((qid1, qid2) => {
-    return questions[qid1].timestamp < questions[qid2].timestamp;
-  });
-
-  sortedIds.forEach(id => sortedQuestions[id] = questions[id]);
-
-  return sortedQuestions;
+  return _.map(questions, question => question)
+    .sort((a, b) => a.timestamp < b.timestamp);
 }
 
-export default function questions(state = {}, action) {
+function saveQuestion(state, action) {
+  const questions = [
+    ...state,
+    action.question
+  ];
+
+  return sortQuestions(questions);
+}
+
+export default function questions(state = [], action) {
   switch(action.type) {
     case types.RECEIVE_QUESTIONS:
-      const sortedQuestions = sortQuestions(action.questions);
+      return sortQuestions(action.questions);
 
-      return {
-        ...state,
-        ...sortedQuestions
-      }
+    case types.SAVE_QUESTION:
+      return saveQuestion(state, action);
 
     default:
       return state;

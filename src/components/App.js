@@ -6,13 +6,14 @@ import { history } from '../utils/history';
 import './App.css';
 import ProtectedRoute from './ProtectedRoute';
 import { fetchUsers } from '../actions/users';
-import { fetchQuestions } from '../actions/questions';
+import { fetchQuestions, postQuestion } from '../actions/questions';
 import { setAuthedUserId } from '../actions/authedUserId';
 import { submitVote } from '../actions/shared';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Poll from './Poll';
 import Results from './Results';
+import CreatePoll from './CreatePoll'
 import _ from '../utils/lodash';
 
 function mapStateToProps(state) {
@@ -29,6 +30,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getUsers: () => dispatch(fetchUsers()),
     getQuestions: () => dispatch(fetchQuestions()),
+    postQuestion: (question) => dispatch(postQuestion(question)),
     setAuthedUserId: (userId) => dispatch(setAuthedUserId(userId)),
     submitVote: (userId, questionId, vote) => dispatch(submitVote(userId, questionId, vote))
   }
@@ -38,7 +40,7 @@ class App extends Component {
   static propTypes = {
     authedUserId: PropTypes.string,
     getUsers: PropTypes.func.isRequired,
-    questions: PropTypes.object.isRequired,
+    questions: PropTypes.array.isRequired,
     submitVote: PropTypes.func.isRequired,
     users: PropTypes.object.isRequired
   }
@@ -64,18 +66,8 @@ class App extends Component {
 
   getQuestionsByStatus = () => {
     const { questions } = this.props;
-    const answered = {};
-    const unanswered = {};
-
-    Object.keys(questions).forEach(questionId => {
-      const question = questions[questionId];
-
-      if (this.isQuestionAnswered(questionId)) {
-        return answered[questionId] = question;
-      }
-
-      return unanswered[questionId] = question;
-    });
+    const answered = questions.filter(question => this.isQuestionAnswered(question));
+    const unanswered = questions.filter(question => !this.isQuestionAnswered(question));
 
     return {
       answered,
@@ -128,7 +120,7 @@ class App extends Component {
         <div className="nav-items-group">
           <Link to="/">Dashboard</Link>
           <Link to="/leaderboard">Leaderboard</Link>
-          <Link to="/new-poll">New Poll</Link>
+          <Link to="/add">New Poll</Link>
         </div>
         {this.renderUserDetails()}
       </nav>
@@ -166,8 +158,15 @@ class App extends Component {
     return <h3>Leaderboard</h3>
   }
 
-  renderNewPoll = () => {
-    return <h3>Create a New Poll</h3>
+  renderCreatePoll = () => {
+    const { authedUserId, postQuestion } = this.props;
+
+    return (
+      <CreatePoll
+        authedUserId={authedUserId}
+        postQuestion={postQuestion}
+      />
+    );
   }
 
   render404 = () => {
@@ -177,7 +176,7 @@ class App extends Component {
   renderQuestion = ({ match }) => {
     const { authedUserId, questions, submitVote, users } = this.props;
     const questionId = match.params.id;
-    const question = questions[questionId];
+    const question = questions.find(question => question.id === questionId);
 
     if (!question) {
       return this.render404();
@@ -228,8 +227,8 @@ class App extends Component {
               isAuthenticated={!!authedUserId}
             />
             <ProtectedRoute
-              path="/new-poll"
-              render={this.renderNewPoll}
+              path="/add"
+              render={this.renderCreatePoll}
               isAuthenticated={!!authedUserId}
             />
             <ProtectedRoute

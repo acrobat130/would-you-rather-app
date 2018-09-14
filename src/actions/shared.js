@@ -18,7 +18,6 @@ export function submitVote(authedUserId, questionId, answer) {
       .then(() => {
         dispatch(fetchQuestions());
         dispatch(fetchUsers());
-        history.push('/');
       })
       .catch(error => console.error('could not save your answer.', error))
   }
