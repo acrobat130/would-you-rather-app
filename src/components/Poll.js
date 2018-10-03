@@ -44,34 +44,39 @@ class Poll extends Component {
     submitVote(authedUserId, question.id, selectedOption);
   }
 
+  renderOptions = (optionValues) => {
+    const { question } = this.props;
+    const { id } = question;
+
+    return optionValues.map(value => {
+      const text = question[value].text;
+
+      return (
+        <label key={value}>
+          <input
+            name={id}
+            onClick={this.handleAnswerSelect}
+            type="radio"
+            value={value}
+          />
+          {text}
+        </label>
+      );
+    })
+  }
+
   render() {
     const { question, users } = this.props;
-    const { id, optionOne, optionTwo } = question;
     const { selectedOption } = this.state;
+    const optionValues = ['optionOne', 'optionTwo'];
+    const options = this.renderOptions(optionValues)
 
     return (
       <div className="question-card">
         <h2>Would You Rather...</h2>
         <div className="form-container">
           <form onSubmit={this.handleSubmit} className="form">
-            <label>
-              <input
-                name={id}
-                onClick={this.handleAnswerSelect}
-                type="radio"
-                value="optionOne"
-              />
-              {optionOne.text}
-            </label>
-            <label>
-              <input
-                name={id}
-                onClick={this.handleAnswerSelect}
-                type="radio"
-                value="optionTwo"
-              />
-              {optionTwo.text}
-            </label>
+            {options}
             <button
               type="submit"
               disabled={selectedOption === ''}

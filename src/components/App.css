@@ -323,3 +323,7 @@ input {
 .no-margin {
   margin: 0;
 }
+
+.link {
+  text-decoration: underline;
+}

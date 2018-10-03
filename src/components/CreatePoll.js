@@ -34,28 +34,31 @@ class CreatePoll extends Component {
     postQuestion(question);
   }
 
+  renderOption = (label, name, placeholder) => {
+    return (
+      <label>
+        <p>{label}</p>
+        <textarea
+          name={name}
+          placeholder={placeholder}
+        />
+      </label>
+    );
+  }
+
   render() {
+    const optionOne = this.renderOption('Option 1:', 'optionOneText', 'Learn to do a handstand');
+    const optionTwo = this.renderOption('Option 2:', 'optionTwoText', 'Learn to ski');
+
     return (
       <div>
         <h2>Create a New Poll</h2>
         <div className="form-container">
           <h3>Would you rather...</h3>
           <form onSubmit={this.handleSubmit} className="form">
-            <label>
-              <p>Option 1:</p>
-              <textarea
-                name="optionOneText"
-                placeholder="Learn to do a handstand"
-              />
-            </label>
+            {optionOne}
             <h3>or</h3>
-            <label>
-              <p>Option 2:</p>
-              <textarea
-                name="optionTwoText"
-                placeholder="Learn to ski"
-              />
-            </label>
+            {optionTwo}
             <button type="submit">Save</button>
           </form>
         </div>
