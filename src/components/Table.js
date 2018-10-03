@@ -45,11 +45,11 @@ export default class Table extends Component {
 
     return data.map(row => {
       const { key, rowData } = row
-      const sortedRowData = formatRowData(columns, rowData);
+      const formattedRowData = formatRowData(columns, rowData);
 
       return (
         <tr key={key}>
-          {this.renderRow(sortedRowData)}
+          {this.renderRow(formattedRowData)}
         </tr>
       );
     });

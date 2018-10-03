@@ -6,6 +6,10 @@ import Table from './Table';
 
 const tableColumns = [
   {
+    value: 'Rank',
+    id: 'rank'
+  },
+  {
     value: 'Avatar',
     id: 'avatar'
   },
@@ -66,12 +70,13 @@ class Leaderboard extends Component {
     const usersWithPoints = addPointsToUsers(this.props.users);
     const sortedUsers = sortUsers(usersWithPoints);
 
-    return sortedUsers.map(user => {
+    return sortedUsers.map((user, index) => {
       const { avatarURL, id, name, questionsSubmitted, questionsAnswered, totalPoints } = user;
 
       return {
         key: id,
         rowData: {
+          rank: index + 1,
           name,
           questionsSubmitted,
           questionsAnswered,
