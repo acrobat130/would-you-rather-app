@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { setAuthedUserId } from '../actions/authedUserId';
 
 function mapStateToProps({ authedUserId, users }) {
@@ -36,6 +36,7 @@ class Nav extends Component {
     return (
       <form onSubmit={this.handleLogout}>
         <button
+          className="button--inverse"
           type="submit"
           disabled={!authedUserId}
         >
@@ -57,7 +58,7 @@ class Nav extends Component {
           src={avatarURL}
           alt="avatar"
         />
-        <h3>{name}</h3>
+        <p>{name}</p>
         {this.renderLogoutButton()}
       </div>
     );
@@ -73,9 +74,9 @@ class Nav extends Component {
     return (
       <nav>
         <div className="nav-items-group">
-          <Link to="/">Dashboard</Link>
-          <Link to="/leaderboard">Leaderboard</Link>
-          <Link to="/add">New Poll</Link>
+          <NavLink exact to="/" className="tab">Dashboard</NavLink>
+          <NavLink to="/leaderboard" className="tab">Leaderboard</NavLink>
+          <NavLink to="/add" className="tab">New Poll</NavLink>
         </div>
         {this.renderUserDetails()}
       </nav>
@@ -83,4 +84,4 @@ class Nav extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Nav);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Nav));

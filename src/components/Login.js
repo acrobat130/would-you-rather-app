@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import _ from '../utils/lodash';
 import { setAuthedUserId } from '../actions/authedUserId';
+import Header from './Header';
 
 function mapStateToProps({ users }) {
   return {
@@ -81,23 +82,26 @@ class Login extends Component {
 
     return (
       <div>
-        <p className="App-intro">
-          Please log in.
-        </p>
-        <select
-          value={selectedUserId}
-          onChange={this.handleChange}
-        >
-          {this.renderOptions()}
-        </select>
-        <form onSubmit={this.handleSubmit}>
-          <button
-            type="submit"
-            disabled={selectedUserId === ''}
-          >
-            Login
-          </button>
-        </form>
+        <Header>
+          <h1 className="App-title">Would You Rather App</h1>
+        </Header>
+        <div className="form-container">
+          <h3>Please sign in</h3>
+          <form className="form" onSubmit={this.handleSubmit}>
+            <select
+              value={selectedUserId}
+              onChange={this.handleChange}
+            >
+              {this.renderOptions()}
+            </select>
+            <button
+              type="submit"
+              disabled={selectedUserId === ''}
+            >
+              Login
+            </button>
+          </form>
+        </div>
       </div>
     )
   }

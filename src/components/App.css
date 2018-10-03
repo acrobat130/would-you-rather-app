@@ -1,29 +1,68 @@
+body,
+.root {
+  height: 100%;
+}
+
 .App {
   text-align: center;
+  background-color: rgb(255, 230, 220);
+  height: 100%;
+  min-height: 100vh;
+  color: #444;
 }
 
 .image {
-  width: 80px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nav-items-group {
+  display: flex;
+  align-items: center;
+  background-color: rgb(75, 0, 100);
+  padding: 0 20px;
 }
 
 .nav-items-group > * {
   margin: 0 5px;
+  padding: 0 5px;
 }
 
-.App-header, nav {
-  background-color: #222;
+.tab {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.tab.active:after {
+  content: "";
+  width: 100%;
+  height: 5px;
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+
+header {
+  background-color: rgb(75, 0, 100);
   padding: 20px;
-  color: white;
+  color: #fff;
+  box-shadow: rgba(20, 20, 20, 0.2) 0 5px 10px 0px;
 }
 
 nav {
   display: flex;
   justify-content: space-between;
-}
-
-nav > * {
-  display: flex;
-  align-items: center;
+  background-color: rgb(75, 0, 100);
+  box-shadow: rgba(20, 20, 20, 0.2) 0 5px 10px 0px;
+  color: #fff;
+  height: 75px;
+  padding: 0 20px;
 }
 
 .App-title {
@@ -34,13 +73,253 @@ nav > * {
   font-size: large;
 }
 
-.question-teaser-link {
+.card-link {
   text-decoration: none;
   color: initial;
 }
 
-.question-teaser {
+.card {
   border: 1px solid black;
-  margin: 10px;
+  margin: 20px;
   list-style: none;
+  background-color: #eee;
+  box-shadow: rgba(20, 20, 20, 0.2) 10px 10px 20px 0px;
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.card:hover {
+  box-shadow: rgba(20, 20, 20, 0.2) 5px 5px 10px 0px;
+  background-color: #f3f3f3;
+}
+
+button {
+  width: 220px;
+  height: 50px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: rgb(75, 0, 100);
+  text-transform: uppercase;
+  font-family: sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  border: 1px solid #000;
+  padding: 0;
+  box-shadow: rgba(20, 20, 20, 0.2) 10px 10px 20px 0px;
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+button:hover {
+  box-shadow: rgba(20, 20, 20, 0.2) 5px 5px 10px 0px;
+  background-color: rgb(75, 20, 120);
+}
+
+button:disabled {
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.button--inverse {
+  background-color: #eee;
+  box-shadow: rgba(20, 20, 20, 0.5) 10px 10px 20px 0px;
+  color: #444;
+  width: 100px;
+  height: 35px;
+  font-size: 12px;
+}
+
+.button--inverse:hover {
+  background-color: #f3f3f3;
+  box-shadow: rgba(20, 20, 20, 0.5) 5px 5px 10px 0px;
+}
+
+select {
+  width: 400px;
+  font-size: 14px;
+  height: 30px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: rgba(20, 20, 20, 0.1) 1px 2px 2px 0px;
+}
+
+.form {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.form-container {
+  width: 600px;
+  border: 1px solid #aaa;
+  margin: 20px auto;
+  box-shadow: rgba(100, 100, 100, 0.1) 2px 3px 3px 0px;
+  background-color: #fff;
+}
+
+.form > * {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.dashboard {
+  width: 768px;
+  margin: 20px auto;
+  border: 1px solid #aaa;
+  box-shadow: rgba(100, 100, 100, 0.1) 2px 3px 3px 0px;
+  background-color: #fff;
+}
+
+.buttons-container {
+  box-shadow: rgba(20, 20, 20, 0.2) 0 5px 10px 0px;
+}
+
+.button--tab {
+  display: inline-block;
+  margin: 0 5px;
+  height: 50px;
+  border: none;
+  background-color: initial;
+  box-shadow: initial;
+  text-transform: none;
+  letter-spacing: initial;
+  width: auto;
+}
+
+.button--tab:disabled {
+  opacity: 1;
+}
+
+.button--tab:hover {
+  background-color: initial;
+  box-shadow: initial;
+}
+
+ul {
+  padding: 0;
+}
+
+.card__small-text {
+  font-size: 14px;
+  color: #444;
+}
+
+.card__large-text {
+  font-size: 18px;
+}
+
+.card__banner {
+  background-color: rgb(75, 0, 100);
+  color: #fff;
+  margin: 0;
+  padding: 12px;
+}
+
+.card__footer {
+  font-size: 12px;
+  padding: 12px 0;
+  margin: 0 12px;
+  color: #444;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #ddd;
+}
+
+.card__footer img {
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+}
+
+table {
+  margin: 0 auto;
+  box-shadow: rgba(100, 100, 100, 0.1) 2px 3px 3px 0px;
+  background-color: #fff;
+  border-collapse: collapse;
+}
+
+thead {
+  box-shadow: rgba(20, 20, 20, 0.2) 0 5px 10px 0px;
+}
+
+th {
+  background-color: rgb(75, 0, 100);
+  color: #fff;
+  height: 40px;
+  padding: 0 10px;
+}
+
+td, th {
+  border: 1px solid #aaa;
+}
+
+td {
+  padding: 5px 10px;
+}
+
+label {
+  display: flex;
+}
+
+label p {
+  margin: 10px;
+}
+
+textarea {
+  box-shadow: rgba(20, 20, 20, 0.1) 1px 2px 2px 0px;
+  border: 1px solid #666;
+  font-family: sans-serif;
+  font-size: 14px;
+  width: 300px;
+  height: 50px;
+  resize: none;
+}
+
+textarea::placeholder {
+  color: #aaa;
+}
+
+input {
+  margin-right: 10px;
+}
+
+.question-footer__container {
+  display: flex;
+  justify-content: center;
+}
+
+.percentage-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.percentage-bar-background {
+  width: 300px;
+  height: 20px;
+  background-color: #fff;
+  box-shadow: rgba(20, 20, 20, 0.2) 5px 5px 10px 0px;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+.percentage-bar-filler {
+  background-color: rgb(75, 0, 100);
+  height: 100%;
+  border-radius: inherit;
+}
+
+.no-margin {
+  margin: 0;
 }

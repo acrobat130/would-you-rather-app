@@ -13,11 +13,11 @@ export default class QuestionTeaser extends Component {
     const date = new Date(timestamp).toDateString();
 
     return (
-      <Link to={`/question/${id}`} className="question-teaser-link">
-        <li className="question-teaser">
-          <p>Would You Rather:</p>
-          <p>{optionOne.text} or...</p>
-          <p>created: {date}</p>
+      <Link to={`/question/${id}`} className="card-link">
+        <li className="card">
+          <p className="card__small-text">Would You Rather:</p>
+          <p className="card__large-text">{optionOne.text} or...</p>
+          <p className="card__footer">created: {date}</p>
         </li>
       </Link>
     );

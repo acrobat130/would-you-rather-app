@@ -37,24 +37,28 @@ class CreatePoll extends Component {
   render() {
     return (
       <div>
-      <h2>Create a New Poll</h2>
-      <form onSubmit={this.handleSubmit}>
-        <h3>Would you rather...</h3>
-        <label>
-          Option 1:
-          <textarea
-            name="optionOneText"
-          />
-        </label>
-        <h3>or</h3>
-        <label>
-          Option 2:
-          <textarea
-            name="optionTwoText"
-          />
-        </label>
-        <button type="submit">Save</button>
-      </form>
+        <h2>Create a New Poll</h2>
+        <div className="form-container">
+          <h3>Would you rather...</h3>
+          <form onSubmit={this.handleSubmit} className="form">
+            <label>
+              <p>Option 1:</p>
+              <textarea
+                name="optionOneText"
+                placeholder="Learn to do a handstand"
+              />
+            </label>
+            <h3>or</h3>
+            <label>
+              <p>Option 2:</p>
+              <textarea
+                name="optionTwoText"
+                placeholder="Learn to ski"
+              />
+            </label>
+            <button type="submit">Save</button>
+          </form>
+        </div>
       </div>
     );
   }

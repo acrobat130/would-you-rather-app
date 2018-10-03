@@ -60,13 +60,15 @@ class Dashboard extends Component {
 
   renderTabButton = (text, value) => {
     const { activeTab } = this.state;
+    const isActive = activeTab === value;
 
     return (
       <button
         type="button"
+        className={`tab button--tab ${isActive ? "active" : ""}`}
         onClick={this.handleTabClick}
         value={value}
-        disabled={activeTab === value}
+        disabled={isActive}
       >
         {text}
       </button>
@@ -91,9 +93,13 @@ class Dashboard extends Component {
     return (
       <div>
         <h2>Dashboard</h2>
-        {this.renderTabButton('Unanswered Questions', 'unanswered')}
-        {this.renderTabButton('Answered Questions', 'answered')}
-        <ul>{this.renderQuestions()}</ul>
+        <div className="dashboard">
+          <div className="nav-items-group buttons-container">
+            {this.renderTabButton('Unanswered Questions', 'unanswered')}
+            {this.renderTabButton('Answered Questions', 'answered')}
+          </div>
+          <ul>{this.renderQuestions()}</ul>
+        </div>
       </div>
     );
   }

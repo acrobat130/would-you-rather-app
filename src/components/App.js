@@ -77,9 +77,6 @@ class App extends Component {
       <Router history={history}>
         <div className="App">
           <Nav />
-          <header className="App-header">
-            <h1 className="App-title">Would You Rather App</h1>
-          </header>
           <Switch>
             <ProtectedRoute
               path="/"

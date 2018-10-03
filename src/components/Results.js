@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import QuestionHeader from './QuestionHeader';
+import QuestionFooter from './QuestionFooter';
 
 function mapStateToProps({ authedUserId, users }) {
   return {
@@ -17,6 +17,18 @@ class Results extends Component {
     users: PropTypes.object.isRequired
   }
 
+  renderProgressBar = (percentage) => {
+    const percentageString = `${percentage}%`;
+    return (
+      <div className="percentage-bar-container">
+        <div className="percentage-bar-background">
+          <div className="percentage-bar-filler" style={{width: percentageString}}></div>
+        </div>
+        <p className="card__small-text no-margin">{percentageString}</p>
+      </div>
+    );
+  }
+
   renderOptions = () => {
     const { authedUserId, question } = this.props;
     const { id, optionOne, optionTwo } = question;
@@ -29,14 +41,17 @@ class Results extends Component {
       const { text, votes } = option;
       const percentage = Math.round(votes.length / totalVotes * 100);
       const selected = votes.includes(authedUserId);
+      const votesCount = votes.length;
+      const votesText = votes.length === 1 ? 'vote' : 'votes';
+      const progressBar = this.renderProgressBar(percentage);
 
       return (
-        <div key={`${id}-${key}`}>
-          {selected && <p style={{backgroundColor: 'antiquewhite'}}>You selected:</p>}
+        <div key={`${id}-${key}`} className="card">
+          {selected && <p className="card__banner">You selected:</p>}
           <div>
-            <p>{text}</p>
-            <p>{votes.length} votes</p>
-            <p>{percentage}%</p>
+            <p className="card__large-text">{text}</p>
+            {progressBar}
+            <p className="card__small-text">{votesCount} {votesText}</p>
           </div>
         </div>
       );
@@ -47,9 +62,12 @@ class Results extends Component {
     const { question, users } = this.props;
 
     return (
-      <div>
-        <QuestionHeader question={question} users={users} />
-        {this.renderOptions()}
+      <div className="question-card">
+        <h2>Would You Rather...</h2>
+        <div className="form-container">
+          {this.renderOptions()}
+          <QuestionFooter question={question} users={users} />
+        </div>
       </div>
     )
   }
