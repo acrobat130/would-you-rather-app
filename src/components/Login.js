@@ -4,9 +4,11 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import _ from '../utils/lodash';
 import { setAuthedUserId } from '../actions/authedUserId';
+import Loading from './Loading';
 
-function mapStateToProps({ users }) {
+function mapStateToProps({ loading, users }) {
   return {
+    isLoading: loading.users,
     users
   }
 }
@@ -19,9 +21,10 @@ function mapDispatchToProps(dispatch) {
 
 class Login extends Component {
   static propTypes = {
-    users: PropTypes.object,
+    isLoading: PropTypes.bool,
+    location: PropTypes.object,
     setAuthedUserId: PropTypes.func.isRequired,
-    location: PropTypes.object
+    users: PropTypes.object,
   }
 
   state = {
@@ -66,10 +69,29 @@ class Login extends Component {
     return options;
   }
 
+  renderSelect = () => {
+    const { isLoading } = this.props;
+    const { selectedUserId } = this.state;
+
+    if (isLoading) {
+      return <Loading />
+    }
+
+    return (
+      <select
+        value={selectedUserId}
+        onChange={this.handleChange}
+      >
+        {this.renderOptions()}
+      </select>
+    );
+  }
+
   render() {
     const locationState = this.props.location.state;
     const referrerPathname = _.isEmpty(locationState) ? '/' : locationState.referrer.pathname;
     const { selectedUserId, shouldRedirect } = this.state;
+    const selectBox = this.renderSelect();
 
     if (shouldRedirect) {
       return (
@@ -87,12 +109,7 @@ class Login extends Component {
         <div className="form-container">
           <h3>Please sign in</h3>
           <form className="form" onSubmit={this.handleSubmit}>
-            <select
-              value={selectedUserId}
-              onChange={this.handleChange}
-            >
-              {this.renderOptions()}
-            </select>
+            {selectBox}
             <button
               type="submit"
               disabled={selectedUserId === ''}

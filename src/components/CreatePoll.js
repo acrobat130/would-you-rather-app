@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import serialize from 'form-serialize';
 import { postQuestion } from '../actions/questions';
+import Loading from './Loading';
 
-function mapStateToProps({ authedUserId }) {
+function mapStateToProps({ authedUserId, loading }) {
   return {
-    authedUserId
+    authedUserId,
+    isLoading: loading.authedUserId || loading.questions
   }
 }
 
@@ -19,6 +21,7 @@ function mapDispatchToProps(dispatch) {
 class CreatePoll extends Component {
   static propTypes = {
     authedUserId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool,
     postQuestion: PropTypes.func.isRequired
   }
 
@@ -46,9 +49,22 @@ class CreatePoll extends Component {
     );
   }
 
+  renderSaveButton = () => {
+    const { isLoading } = this.props;
+
+    if (isLoading) {
+      return <Loading />
+    }
+
+    return (
+      <button type="submit">Save</button>
+    );
+  }
+
   render() {
     const optionOne = this.renderOption('Option 1:', 'optionOneText', 'Learn to do a handstand');
     const optionTwo = this.renderOption('Option 2:', 'optionTwoText', 'Learn to ski');
+    const saveButton = this.renderSaveButton();
 
     return (
       <div>
@@ -59,7 +75,7 @@ class CreatePoll extends Component {
             {optionOne}
             <h3>or</h3>
             {optionTwo}
-            <button type="submit">Save</button>
+            {saveButton}
           </form>
         </div>
       </div>

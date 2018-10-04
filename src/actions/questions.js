@@ -2,33 +2,49 @@ import { _getQuestions, _saveQuestion } from '../utils/_DATA.js';
 import { history } from '../utils/history';
 import * as types from './types';
 
-function receiveQuestions(questions) {
+function fetchQuestionsStarted() {
   return {
-    type: types.RECEIVE_QUESTIONS,
+    type: types.FETCH_QUESTIONS
+  }
+}
+
+function fetchQuestionsCompleted(questions) {
+  return {
+    type: types.FETCH_QUESTIONS_COMPLETED,
     questions
   }
 }
 
-function saveQuestion(question) {
+function saveQuestionStarted() {
+  return {
+    type: types.SAVE_QUESTION
+  }
+}
+
+function saveQuestionCompleted(question) {
   return  {
-    type: types.SAVE_QUESTION,
+    type: types.SAVE_QUESTION_COMPLETED,
     question
   }
 }
 
 export function fetchQuestions() {
   return (dispatch) => {
+    dispatch(fetchQuestionsStarted());
+
     return _getQuestions()
-      .then(questions => dispatch(receiveQuestions(questions)))
+      .then(questions => dispatch(fetchQuestionsCompleted(questions)))
       .catch(error => console.error('could not fetch questions.', error))
   }
 }
 
 export function postQuestion(question) {
   return (dispatch) => {
+
+    dispatch(saveQuestionStarted());
     return _saveQuestion(question)
       .then(newQuestion => {
-        dispatch(saveQuestion(newQuestion));
+        dispatch(saveQuestionCompleted(newQuestion));
         history.push('/');
       })
       .catch(error => console.error('could not save question.', error))

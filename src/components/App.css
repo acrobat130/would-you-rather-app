@@ -1,3 +1,4 @@
+/* TODO: add css modules */
 body,
 .root {
   height: 100%;
@@ -5,7 +6,7 @@ body,
 
 .App {
   text-align: center;
-  background-color: rgb(255, 230, 220);
+  background-color: #ffe6dc;
   height: 100%;
   min-height: 100vh;
   color: #444;
@@ -21,7 +22,7 @@ body,
 .nav-items-group {
   display: flex;
   align-items: center;
-  background-color: rgb(75, 0, 100);
+  background-color: #4b0064;
   padding: 0 20px;
 }
 
@@ -49,7 +50,7 @@ body,
 
 
 header {
-  background-color: rgb(75, 0, 100);
+  background-color: #4b0064;
   padding: 20px;
   color: #fff;
   box-shadow: rgba(20, 20, 20, 0.2) 0 5px 10px 0px;
@@ -58,7 +59,7 @@ header {
 nav {
   display: flex;
   justify-content: space-between;
-  background-color: rgb(75, 0, 100);
+  background-color: #4b0064;
   box-shadow: rgba(20, 20, 20, 0.2) 0 5px 10px 0px;
   color: #fff;
   height: 75px;
@@ -97,7 +98,7 @@ button {
   height: 50px;
   border-radius: 5px;
   color: #fff;
-  background-color: rgb(75, 0, 100);
+  background-color: #4b0064;
   text-transform: uppercase;
   font-family: sans-serif;
   font-size: 14px;
@@ -114,7 +115,7 @@ button {
 
 button:hover {
   box-shadow: rgba(20, 20, 20, 0.2) 5px 5px 10px 0px;
-  background-color: rgb(75, 20, 120);
+  background-color: #4b1478;
 }
 
 button:disabled {
@@ -219,7 +220,7 @@ ul {
 }
 
 .card__banner {
-  background-color: rgb(75, 0, 100);
+  background-color: #4b0064;
   color: #fff;
   margin: 0;
   padding: 12px;
@@ -254,7 +255,7 @@ thead {
 }
 
 th {
-  background-color: rgb(75, 0, 100);
+  background-color: #4b0064;
   color: #fff;
   height: 40px;
   padding: 0 10px;
@@ -315,7 +316,7 @@ input {
 }
 
 .percentage-bar-filler {
-  background-color: rgb(75, 0, 100);
+  background-color: #4b0064;
   height: 100%;
   border-radius: inherit;
 }
@@ -326,4 +327,19 @@ input {
 
 .link {
   text-decoration: underline;
+}
+
+.loading {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #4b0064;
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: circle 0.75s linear infinite;
+}
+
+@keyframes circle {
+  to {
+    transform: rotate(360deg);
+  }
 }

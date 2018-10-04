@@ -1,17 +1,25 @@
 import { _getUsers } from '../utils/_DATA.js';
 import * as types from './types';
 
-function receiveUsers(users) {
+function fetchUsersCompleted(users) {
   return {
-    type: types.RECEIVE_USERS,
+    type: types.FETCH_USERS_COMPLETED,
     users
+  }
+}
+
+function fetchUsersLoading() {
+  return {
+    type: types.FETCH_USERS
   }
 }
 
 export function fetchUsers() {
   return (dispatch) => {
+    dispatch(fetchUsersLoading());
+
     return _getUsers()
-      .then(users => dispatch(receiveUsers(users)))
+      .then(users => dispatch(fetchUsersCompleted(users)))
       .catch(error => console.error('could not fetch users.', error))
   }
 }

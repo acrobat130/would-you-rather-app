@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { submitVote } from '../actions/shared';
 import QuestionFooter from './QuestionFooter';
+import Loading from './Loading';
 
-function mapStateToProps({ authedUserId, users }) {
+function mapStateToProps({ authedUserId, loading, users }) {
   return {
     authedUserId,
-    users
+    users,
+    isLoading: loading.authedUserId || loading.users
   }
 }
 
@@ -20,6 +22,7 @@ function mapDispatchToProps(dispatch) {
 class Poll extends Component {
   static propTypes = {
     authedUserId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool,
     question: PropTypes.object.isRequired,
     submitVote: PropTypes.func.isRequired,
     users: PropTypes.object.isRequired
@@ -65,11 +68,29 @@ class Poll extends Component {
     })
   }
 
+  renderButton = () => {
+    const { isLoading } = this.props;
+    const { selectedOption } = this.state;
+
+    if (isLoading) {
+      return <Loading />
+    }
+
+    return (
+      <button
+        type="submit"
+        disabled={selectedOption === ''}
+      >
+        Vote
+      </button>
+    );
+  }
+
   render() {
     const { question, users } = this.props;
-    const { selectedOption } = this.state;
     const optionValues = ['optionOne', 'optionTwo'];
     const options = this.renderOptions(optionValues)
+    const button = this.renderButton();
 
     return (
       <div className="question-card">
@@ -77,12 +98,7 @@ class Poll extends Component {
         <div className="form-container">
           <form onSubmit={this.handleSubmit} className="form">
             {options}
-            <button
-              type="submit"
-              disabled={selectedOption === ''}
-            >
-              Vote
-            </button>
+            {button}
           </form>
           <QuestionFooter question={question} users={users} />
         </div>

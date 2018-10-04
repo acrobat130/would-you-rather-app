@@ -17,6 +17,7 @@ import Nav from './Nav';
 import PageNotFound from './PageNotFound';
 import { isQuestionAnswered } from '../utils/questions-helper';
 
+// TODO: run prettier and lint
 function mapStateToProps(state) {
   const { authedUserId, questions, users } = state;
 
@@ -46,7 +47,6 @@ class App extends Component {
     this.props.getUsers();
     this.props.getQuestions();
   }
-
 
   renderLogin = ({ location }) => {
     return <Login location={location} />;

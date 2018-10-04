@@ -19,10 +19,10 @@ function saveQuestion(state, action) {
 
 export default function users(state = {}, action) {
   switch(action.type) {
-    case types.RECEIVE_USERS:
+    case types.FETCH_USERS_COMPLETED:
       return action.users;
 
-    case types.SAVE_QUESTION:
+    case types.SAVE_QUESTION_COMPLETED:
       return saveQuestion(state, action);
 
     default:
