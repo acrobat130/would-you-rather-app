@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export default class QuestionTeaser extends Component {
   static propTypes = {
     question: PropTypes.object.isRequired
-  }
+  };
 
   render() {
     const { question } = this.props;

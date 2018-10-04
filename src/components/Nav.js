@@ -8,13 +8,13 @@ function mapStateToProps({ authedUserId, users }) {
   return {
     authedUserId,
     users
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     setAuthedUserId: (userId) => dispatch(setAuthedUserId(userId))
-  }
+  };
 }
 
 class Nav extends Component {
@@ -22,13 +22,13 @@ class Nav extends Component {
     authedUserId: PropTypes.string.isRequired,
     setAuthedUserId: PropTypes.func.isRequired,
     users: PropTypes.object.isRequired
-  }
+  };
 
   handleLogout = (e) => {
     e.preventDefault();
 
     this.props.setAuthedUserId('');
-  }
+  };
 
   renderLogoutButton = () => {
     const { authedUserId } = this.props;
@@ -43,8 +43,8 @@ class Nav extends Component {
           Logout
         </button>
       </form>
-    )
-  }
+    );
+  };
 
   renderUserDetails = () => {
     const { authedUserId, users } = this.props;
@@ -53,16 +53,12 @@ class Nav extends Component {
 
     return (
       <div className="nav-items-group">
-        <img
-          className="image"
-          src={avatarURL}
-          alt="avatar"
-        />
+        <img className="image" src={avatarURL} alt="avatar" />
         <p>{name}</p>
         {this.renderLogoutButton()}
       </div>
     );
-  }
+  };
 
   render() {
     const { authedUserId } = this.props;
@@ -74,9 +70,15 @@ class Nav extends Component {
     return (
       <nav>
         <div className="nav-items-group">
-          <NavLink exact to="/" className="tab">Dashboard</NavLink>
-          <NavLink to="/leaderboard" className="tab">Leaderboard</NavLink>
-          <NavLink to="/add" className="tab">New Poll</NavLink>
+          <NavLink exact to="/" className="tab">
+            Dashboard
+          </NavLink>
+          <NavLink to="/leaderboard" className="tab">
+            Leaderboard
+          </NavLink>
+          <NavLink to="/add" className="tab">
+            New Poll
+          </NavLink>
         </div>
         {this.renderUserDetails()}
       </nav>
@@ -84,4 +86,9 @@ class Nav extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Nav));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Nav)
+);

@@ -5,27 +5,27 @@ import * as types from './types';
 function fetchQuestionsStarted() {
   return {
     type: types.FETCH_QUESTIONS
-  }
+  };
 }
 
 function fetchQuestionsCompleted(questions) {
   return {
     type: types.FETCH_QUESTIONS_COMPLETED,
     questions
-  }
+  };
 }
 
 function saveQuestionStarted() {
   return {
     type: types.SAVE_QUESTION
-  }
+  };
 }
 
 function saveQuestionCompleted(question) {
-  return  {
+  return {
     type: types.SAVE_QUESTION_COMPLETED,
     question
-  }
+  };
 }
 
 export function fetchQuestions() {
@@ -33,20 +33,19 @@ export function fetchQuestions() {
     dispatch(fetchQuestionsStarted());
 
     return _getQuestions()
-      .then(questions => dispatch(fetchQuestionsCompleted(questions)))
-      .catch(error => console.error('could not fetch questions.', error))
-  }
+      .then((questions) => dispatch(fetchQuestionsCompleted(questions)))
+      .catch((error) => console.error('could not fetch questions.', error));
+  };
 }
 
 export function postQuestion(question) {
   return (dispatch) => {
-
     dispatch(saveQuestionStarted());
     return _saveQuestion(question)
-      .then(newQuestion => {
+      .then((newQuestion) => {
         dispatch(saveQuestionCompleted(newQuestion));
         history.push('/');
       })
-      .catch(error => console.error('could not save question.', error))
-  }
+      .catch((error) => console.error('could not save question.', error));
+  };
 }

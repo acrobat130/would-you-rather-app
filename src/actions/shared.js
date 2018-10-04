@@ -6,7 +6,7 @@ import * as types from './types';
 function submitVoteStarted() {
   return {
     type: types.SUBMIT_VOTE_STARTED
-  }
+  };
 }
 
 export function submitVote(authedUserId, questionId, answer) {
@@ -18,6 +18,6 @@ export function submitVote(authedUserId, questionId, answer) {
         dispatch(fetchQuestions());
         dispatch(fetchUsers());
       })
-      .catch(error => console.error('could not save your answer.', error))
-  }
+      .catch((error) => console.error('could not save your answer.', error));
+  };
 }

@@ -25,14 +25,14 @@ function mapStateToProps(state) {
     authedUserId,
     questions,
     users
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     getUsers: () => dispatch(fetchUsers()),
-    getQuestions: () => dispatch(fetchQuestions()),
-  }
+    getQuestions: () => dispatch(fetchQuestions())
+  };
 }
 
 class App extends Component {
@@ -41,16 +41,16 @@ class App extends Component {
     getUsers: PropTypes.func.isRequired,
     questions: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired
-  }
+  };
 
   componentDidMount = () => {
     this.props.getUsers();
     this.props.getQuestions();
-  }
+  };
 
   renderLogin = ({ location }) => {
     return <Login location={location} />;
-  }
+  };
 
   renderQuestion = ({ match }) => {
     const { authedUserId, questions, users } = this.props;
@@ -58,7 +58,7 @@ class App extends Component {
     const question = questions[questionId];
 
     if (!question) {
-      return <PageNotFound />
+      return <PageNotFound />;
     }
 
     const isAnswered = isQuestionAnswered(authedUserId, questionId, users);
@@ -68,7 +68,7 @@ class App extends Component {
     }
 
     return <Poll question={question} />;
-  }
+  };
 
   render() {
     const { authedUserId } = this.props;
@@ -99,13 +99,8 @@ class App extends Component {
               render={this.renderQuestion}
               isAuthenticated={!!authedUserId}
             />
-            <Route
-              path="/login"
-              render={this.renderLogin}
-            />
-            <Route
-              component={PageNotFound}
-            />
+            <Route path="/login" render={this.renderLogin} />
+            <Route component={PageNotFound} />
           </Switch>
         </div>
       </Router>
@@ -113,4 +108,7 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

@@ -10,13 +10,14 @@ function mapStateToProps({ authedUserId, loading, users }) {
     authedUserId,
     users,
     isLoading: loading.authedUserId || loading.users
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    submitVote: (userId, questionId, vote) => dispatch(submitVote(userId, questionId, vote))
-  }
+    submitVote: (userId, questionId, vote) =>
+      dispatch(submitVote(userId, questionId, vote))
+  };
 }
 
 class Poll extends Component {
@@ -26,17 +27,17 @@ class Poll extends Component {
     question: PropTypes.object.isRequired,
     submitVote: PropTypes.func.isRequired,
     users: PropTypes.object.isRequired
-  }
+  };
 
   state = {
     selectedOption: ''
-  }
+  };
 
   handleAnswerSelect = (e) => {
     const selectedOption = e.target.value;
 
     this.setState({ selectedOption });
-  }
+  };
 
   handleSubmit = (e) => {
     const { authedUserId, question, submitVote } = this.props;
@@ -45,13 +46,13 @@ class Poll extends Component {
     e.preventDefault();
 
     submitVote(authedUserId, question.id, selectedOption);
-  }
+  };
 
   renderOptions = (optionValues) => {
     const { question } = this.props;
     const { id } = question;
 
-    return optionValues.map(value => {
+    return optionValues.map((value) => {
       const text = question[value].text;
 
       return (
@@ -65,31 +66,28 @@ class Poll extends Component {
           {text}
         </label>
       );
-    })
-  }
+    });
+  };
 
   renderButton = () => {
     const { isLoading } = this.props;
     const { selectedOption } = this.state;
 
     if (isLoading) {
-      return <Loading />
+      return <Loading />;
     }
 
     return (
-      <button
-        type="submit"
-        disabled={selectedOption === ''}
-      >
+      <button type="submit" disabled={selectedOption === ''}>
         Vote
       </button>
     );
-  }
+  };
 
   render() {
     const { question, users } = this.props;
     const optionValues = ['optionOne', 'optionTwo'];
-    const options = this.renderOptions(optionValues)
+    const options = this.renderOptions(optionValues);
     const button = this.renderButton();
 
     return (
@@ -107,4 +105,7 @@ class Poll extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Poll);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Poll);

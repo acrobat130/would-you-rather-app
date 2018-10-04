@@ -9,13 +9,13 @@ function mapStateToProps({ authedUserId, loading }) {
   return {
     authedUserId,
     isLoading: loading.authedUserId || loading.questions
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     postQuestion: (question) => dispatch(postQuestion(question))
-  }
+  };
 }
 
 class CreatePoll extends Component {
@@ -23,47 +23,50 @@ class CreatePoll extends Component {
     authedUserId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
     postQuestion: PropTypes.func.isRequired
-  }
+  };
 
   handleSubmit = (e) => {
     const { authedUserId, postQuestion } = this.props;
     const form = e.target;
 
-    e.preventDefault()
+    e.preventDefault();
 
     const question = serialize(form, { hash: true });
 
     question.author = authedUserId;
     postQuestion(question);
-  }
+  };
 
   renderOption = (label, name, placeholder) => {
     return (
       <label>
         <p>{label}</p>
-        <textarea
-          name={name}
-          placeholder={placeholder}
-        />
+        <textarea name={name} placeholder={placeholder} />
       </label>
     );
-  }
+  };
 
   renderSaveButton = () => {
     const { isLoading } = this.props;
 
     if (isLoading) {
-      return <Loading />
+      return <Loading />;
     }
 
-    return (
-      <button type="submit">Save</button>
-    );
-  }
+    return <button type="submit">Save</button>;
+  };
 
   render() {
-    const optionOne = this.renderOption('Option 1:', 'optionOneText', 'Learn to do a handstand');
-    const optionTwo = this.renderOption('Option 2:', 'optionTwoText', 'Learn to ski');
+    const optionOne = this.renderOption(
+      'Option 1:',
+      'optionOneText',
+      'Learn to do a handstand'
+    );
+    const optionTwo = this.renderOption(
+      'Option 2:',
+      'optionTwoText',
+      'Learn to ski'
+    );
     const saveButton = this.renderSaveButton();
 
     return (
@@ -83,4 +86,7 @@ class CreatePoll extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatePoll);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatePoll);

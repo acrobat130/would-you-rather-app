@@ -5,15 +5,13 @@ import { Route, Redirect } from 'react-router-dom';
 export default class ProtectedRoute extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool.isRequired
-  }
+  };
 
   render() {
     const { isAuthenticated, location } = this.props;
 
     if (isAuthenticated) {
-      return (
-        <Route {...this.props} />
-      )
+      return <Route {...this.props} />;
     }
 
     return (
@@ -25,6 +23,6 @@ export default class ProtectedRoute extends Component {
           }
         }}
       />
-    )
+    );
   }
 }

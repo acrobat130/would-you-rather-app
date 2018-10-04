@@ -1,7 +1,7 @@
 import * as types from '../actions/types';
 
 export default function questions(state = {}, action) {
-  switch(action.type) {
+  switch (action.type) {
     case types.FETCH_QUESTIONS_COMPLETED:
       return action.questions;
 
@@ -11,7 +11,7 @@ export default function questions(state = {}, action) {
       return {
         ...state,
         [question.id]: question
-      }
+      };
 
     default:
       return state;

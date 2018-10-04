@@ -2,11 +2,11 @@ import * as types from '../actions/types';
 
 const generateLoadingState = (state, key, isLoading) => ({
   ...state,
-  [key]: isLoading,
+  [key]: isLoading
 });
 
 export default function loading(state = {}, action) {
-  switch(action.type) {
+  switch (action.type) {
     case types.FETCH_USERS:
       return generateLoadingState(state, 'users', true);
 

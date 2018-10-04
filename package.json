@@ -4,9 +4,12 @@
   "private": true,
   "dependencies": {
     "form-serialize": "^0.7.2",
+    "husky": "^1.1.0",
+    "lint-staged": "^7.3.0",
     "lodash.foreach": "^4.5.0",
     "lodash.isempty": "^4.4.0",
     "lodash.map": "^4.6.0",
+    "prettier": "^1.14.3",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
@@ -22,5 +25,16 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,css}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

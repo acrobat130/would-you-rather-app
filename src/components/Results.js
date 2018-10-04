@@ -7,7 +7,7 @@ function mapStateToProps({ authedUserId, users }) {
   return {
     authedUserId,
     users
-  }
+  };
 }
 
 class Results extends Component {
@@ -15,19 +15,22 @@ class Results extends Component {
     authedUserId: PropTypes.string.isRequired,
     question: PropTypes.object.isRequired,
     users: PropTypes.object.isRequired
-  }
+  };
 
   renderProgressBar = (percentage) => {
     const percentageString = `${percentage}%`;
     return (
       <div className="percentage-bar-container">
         <div className="percentage-bar-background">
-          <div className="percentage-bar-filler" style={{width: percentageString}}></div>
+          <div
+            className="percentage-bar-filler"
+            style={{ width: percentageString }}
+          />
         </div>
         <p className="card__small-text no-margin">{percentageString}</p>
       </div>
     );
-  }
+  };
 
   renderOptions = () => {
     const { authedUserId, question } = this.props;
@@ -39,7 +42,7 @@ class Results extends Component {
 
     return options.map((option, key) => {
       const { text, votes } = option;
-      const percentage = Math.round(votes.length / totalVotes * 100);
+      const percentage = Math.round((votes.length / totalVotes) * 100);
       const selected = votes.includes(authedUserId);
       const votesCount = votes.length;
       const votesText = votes.length === 1 ? 'vote' : 'votes';
@@ -51,12 +54,14 @@ class Results extends Component {
           <div>
             <p className="card__large-text">{text}</p>
             {progressBar}
-            <p className="card__small-text">{votesCount} {votesText}</p>
+            <p className="card__small-text">
+              {votesCount} {votesText}
+            </p>
           </div>
         </div>
       );
     });
-  }
+  };
 
   render() {
     const { question, users } = this.props;
@@ -69,7 +74,7 @@ class Results extends Component {
           <QuestionFooter question={question} users={users} />
         </div>
       </div>
-    )
+    );
   }
 }
 

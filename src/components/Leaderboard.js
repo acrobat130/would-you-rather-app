@@ -33,7 +33,7 @@ const tableColumns = [
 
 // users object
 function addPointsToUsers(users) {
-  return _.map(users, user => {
+  return _.map(users, (user) => {
     const { answers, questions } = user;
     const questionsSubmitted = questions.length;
     const questionsAnswered = Object.keys(answers).length;
@@ -44,34 +44,41 @@ function addPointsToUsers(users) {
       questionsSubmitted,
       questionsAnswered,
       totalPoints
-    }
-  })
+    };
+  });
 }
 
 // users array
 function sortUsers(users) {
- return users.sort((user1, user2) => {
-     return user1.totalPoints < user2.totalPoints;
-   })
+  return users.sort((user1, user2) => {
+    return user1.totalPoints < user2.totalPoints;
+  });
 }
 
 function mapStateToProps({ users }) {
   return {
     users
-  }
+  };
 }
 
 class Leaderboard extends Component {
   static propTypes = {
     users: PropTypes.object.isRequired
-  }
+  };
 
   getUserData = () => {
     const usersWithPoints = addPointsToUsers(this.props.users);
     const sortedUsers = sortUsers(usersWithPoints);
 
     return sortedUsers.map((user, index) => {
-      const { avatarURL, id, name, questionsSubmitted, questionsAnswered, totalPoints } = user;
+      const {
+        avatarURL,
+        id,
+        name,
+        questionsSubmitted,
+        questionsAnswered,
+        totalPoints
+      } = user;
 
       return {
         key: id,
@@ -83,9 +90,9 @@ class Leaderboard extends Component {
           totalPoints,
           avatar: <img src={avatarURL} className="image" alt="avatar" />
         }
-      }
-    })
-  }
+      };
+    });
+  };
 
   render() {
     const userData = this.getUserData();
@@ -93,10 +100,7 @@ class Leaderboard extends Component {
     return (
       <div>
         <h2>Leaderboard</h2>
-        <Table 
-          columns={tableColumns}
-          data={userData}
-        />
+        <Table columns={tableColumns} data={userData} />
       </div>
     );
   }
