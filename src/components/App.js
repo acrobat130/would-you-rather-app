@@ -17,7 +17,6 @@ import Nav from './Nav';
 import PageNotFound from './PageNotFound';
 import { isQuestionAnswered } from '../utils/questions-helper';
 
-// TODO: run prettier and lint
 function mapStateToProps(state) {
   const { authedUserId, questions, users } = state;
 
